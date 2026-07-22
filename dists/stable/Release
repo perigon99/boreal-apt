@@ -1,25 +1,25 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Wed, 22 Jul 2026 18:48:46 +0000
+Date: Wed, 22 Jul 2026 20:05:02 +0000
 Description: Depot de mises a jour Boreal OS
 Label: Boreal
 Origin: Boreal
 Suite: stable
 MD5Sum:
- 3e64ba5871b8211e39a45fa799905e23              181 Release
+ 55ba82f1a42876d4e24474da02242004              181 Release
  7ffebe22d4f51dd586810cfe0e2f848a             1136 main/binary-amd64/Packages
- 61e8dbbecae4d930793e3fc63ebd0403              781 main/binary-amd64/Packages.gz
+ 967b2a1f5569ce1b71ea4768ddb9dcdc              781 main/binary-amd64/Packages.gz
 SHA1:
- 76e3ec71a9a6e0d449c6883bfe221ccf1b19613e              181 Release
+ 2d322b62b21639304c84e877a0bff92deb29f191              181 Release
  edc2b71e570e97f09d5045cbf0a13685717764bf             1136 main/binary-amd64/Packages
- baad386f3516dbecafc6d8f36693d2e803d5bf6c              781 main/binary-amd64/Packages.gz
+ 37b6abc2c195677802e74b0ddae0e6c64a8afffe              781 main/binary-amd64/Packages.gz
 SHA256:
- f470e6f7bd83c41ac6ede270c586a7c9270996102bf45c69dfd5308d07803a42              181 Release
+ 1692e57a8e5e357bd4f18b1b85e50e0d302f816de7d3b8a29027a2efaaa1a78e              181 Release
  c92839ca903e9eaef66b606cec7163ecb6bdd9f37f960240748009e5a519f9dc             1136 main/binary-amd64/Packages
- aa5222e9590ef985e9dd2690c7f1c5ee13b1174a6aa3990c14f7678f7191f2b1              781 main/binary-amd64/Packages.gz
+ 875042351293def1d80fa5a7da10d049bd6e79f0979617f780b429b4082e6ce9              781 main/binary-amd64/Packages.gz
 SHA512:
- dcbc019f88dec0df134762aa37407bc0011be24a3c6cfd8c5cb1f32561f83c2ab1a98c4d5627f14522d85db8d9006c55956e1609d78713229bc4ee0c5bf04073              181 Release
+ 3e0c35be74b111d12941acd71d251c3e57b8ac84b265f989ce48384253ac747462d95cdaf16bc48d238c133e641e9edbe780dc6478a4d11fd1a19d8fb9596884              181 Release
  53b55ceb499ea366284e452be3a91d0f1dcc1d8ca18a4d38d973ab55487b45d6f2cedd8b63ada2e71b0a7aebdadbfefa98e0665fdefcea3a73544fd236482c16             1136 main/binary-amd64/Packages
- e65cf39e208485c5c0982fc9f72fba3b52fa031188d3db4c08f638b794cc7180d9bed177474f5f802b83a7bc969062dd593f40f74fc757e2c301a5d71df23619              781 main/binary-amd64/Packages.gz
-Valid-Until: Thu, 22 Jul 2027 18:48:46 UTC
+ 5cf36b9431a161746a1cbd8b11bd3fe2b24710ef5e9df34ee379407c8b79750815b20efc4cebfe881f4f22d5287fb553a756807abbc5adf9ac15dd4b1e574254              781 main/binary-amd64/Packages.gz
+Valid-Until: Thu, 22 Jul 2027 20:05:02 UTC
