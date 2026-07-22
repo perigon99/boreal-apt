@@ -1,0 +1,22 @@
+Package: boreal-keyring
+Architecture: all
+Version: 1.0.0
+Priority: important
+Section: admin
+Maintainer: REMPLACER Nom Mainteneur <apt@REMPLACER-ton-domaine.ca>
+Filename: pool/main/b/boreal-keyring/boreal-keyring_1.0.0_all.deb
+Size: 2780
+MD5sum: 2775bf1c373e86717ea2dca6165663f8
+SHA1: 25b44d39d366ff93a9378bc39b9558a95e2401c8
+SHA256: 40b3cbc225eb11b611338024abe606e8b98c7115e68f612f338360e6162ca45b
+SHA512: 3b7c0b8e548701057fed6f53db7caa50157b3e1ecd1a274fa9e725deb0a93eff7c28e52b68a33df0d1ef88f1f9d3d7c04900f590186209dba8e4ced1cad8e5ad
+Description: Clé publique et source du dépôt de mises à jour Boréal
+ Installe la clé PUBLIQUE de signature du dépôt Boréal dans
+ /usr/share/keyrings/boreal-archive-keyring.gpg et la source apt (format
+ deb822) qui la référence en Signed-By. Sans ce paquet, aucune machine ne
+ fait confiance au dépôt — il DOIT donc être présent dans l'ISO (porte à
+ sens unique : un oubli = 50 visites à domicile pour changer de clé).
+ .
+ NE CONTIENT QUE LA CLÉ PUBLIQUE. La clé privée de signature est générée
+ hors ligne et ne quitte jamais le mainteneur — elle n'est JAMAIS dans l'ISO.
+
