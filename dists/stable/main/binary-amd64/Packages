@@ -20,3 +20,32 @@ Description: Clé publique et source du dépôt de mises à jour Boréal
  NE CONTIENT QUE LA CLÉ PUBLIQUE. La clé privée de signature est générée
  hors ligne et ne quitte jamais le mainteneur — elle n'est JAMAIS dans l'ISO.
 
+Package: boreal-session-wayland
+Architecture: all
+Version: 1.0.0
+Priority: optional
+Section: x11
+Maintainer: Sebastien Perot-Morin <apt@mrservices.ca>
+Filename: pool/main/b/boreal-session-wayland/boreal-session-wayland_1.0.0_all.deb
+Size: 1888
+MD5sum: f25ec5b9461f2ba9b7bfe187071ad8c6
+SHA1: f46f4534905f8390ba3c691abe33ca81f70545bc
+SHA256: 87398043a022b2f07490501956735b635445e4e1522912fc2bb4a66d8c99ed89
+SHA512: e51cbfc119a7ca63048546b553e2ce88d537915a096e7809a9169fadb8986d782211a2545111f72248c9ad47747ecf72909bf42c968708e92aac5ce9b11e50ff
+Description: Active la session « LXQt (Wayland) » au login (décorations labwc)
+ Déparque la session Wayland gelée par install-boreal-theme.sh §8b
+ (correctif anti-écran-noir) : lxqt-wayland.desktop retourne dans
+ /usr/share/wayland-sessions/ et devient sélectionnable dans le menu de
+ session de l'écran de connexion. X11+Openbox RESTE le défaut — Wayland
+ est un choix explicite de l'utilisateur au login.
+ .
+ Effet visible : décorations modernes labwc — coins arrondis 12 px (haut
+ des fenêtres ; labwc 0.9.3 n'arrondit pas le bas), police Hanken
+ Grotesk, sans ombre (perf). Tout est déjà dans l'image ; ce paquet ne
+ fait que rendre la session visible.
+ .
+ labwc.desktop (compositeur nu, écran noir garanti) reste parqué.
+ « apt remove boreal-session-wayland » re-parque la session (retour
+ arrière propre). Premier paquet livré par le canal de mises à jour
+ Boréal — sert aussi de test de bout en bout du canal.
+
