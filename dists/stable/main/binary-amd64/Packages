@@ -40,6 +40,55 @@ Description: Bureau « Boréal » pour Lubuntu (LXQt) — identité originale, o
  N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
  identité 100 % originale (aucun asset propriétaire).
 
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.1.1
+Priority: optional
+Section: x11
+Maintainer: Cooperative Boreal <boreal@example.org>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qml-module-qtquick-controls2, qml-module-qtquick-window2, qt5-style-kvantum, dconf-cli,
+ papirus-icon-theme, fonts-hanken-grotesk | fonts-croscore, network-manager,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.1.1_amd64.deb
+Size: 2837324
+MD5sum: 63b30562f7f8687bbaaf411c93bcf9e5
+SHA1: 3fd184cc9a1ee518020292b423af27cca6da4008
+SHA256: 8b51e83f3e118d96701bac32cbc50d29239604ad8e6c9f0b407c6c6f382702e3
+SHA512: d0b2204a8f4c215a824a4fbeb7c30b8ef6ecd1f81ceaf3084814f285de8b5a6279f122978226984cc25f9c835fc4849c6b23a3d2af30623cddee377efa8baa67
+Description: Bureau « Boréal » pour Lubuntu (LXQt) — identité originale, outillage natif
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
 Package: boreal-keyring
 Architecture: all
 Version: 1.0.0
