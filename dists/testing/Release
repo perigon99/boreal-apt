@@ -1,0 +1,25 @@
+Architectures: amd64
+Codename: testing
+Components: main
+Date: Fri, 21 Aug 2026 17:53:01 +0000
+Description: Depot de mises a jour Boreal OS
+Label: Boreal
+Origin: Boreal
+Suite: testing
+MD5Sum:
+ 0287bb86ed2760b835a622b49a417a40              183 Release
+ 6cd06144acf495cac4f2fbc5d7a53115            27635 main/binary-amd64/Packages
+ 9b0b52a5e406b423c88adf39b94105a3             5382 main/binary-amd64/Packages.gz
+SHA1:
+ a79152edfa05e519b0cbb66493d6ed51bf74f08d              183 Release
+ a07e32bbe3e82cdd2ef993e4868fd0f2f1e16024            27635 main/binary-amd64/Packages
+ 1f310fdb1c313c367df42a05cd0148c12ae2dc61             5382 main/binary-amd64/Packages.gz
+SHA256:
+ 0eb65e9f9657cc229d12780dfffb843a2e999cd4f5e4ef83a982f3f2f8163853              183 Release
+ 5e3ecbc280ba09b1793016681d903d0b86a219adc1098ec2ccba7f7cbe2a9dcd            27635 main/binary-amd64/Packages
+ db0fe26ad089f44ffa2f8905f25ae5e58b7902828ef90bdd8cd3c32b7a518c65             5382 main/binary-amd64/Packages.gz
+SHA512:
+ 1ef32d493bf335b0dcaaf29d56f5bab6cb1a2205f9e9cf867ed8942dd7d7514af29c08ac69950714074263cdc5fce13c79a3a7df7266f7af3fb9da57f56ed7e9              183 Release
+ 049390b88eb1935186a07d2a645ffcb7a0585a0f7e23dca06d9110854aeb54ffaf9fcf44a1a0ea230364a34f7728410a544ac7ed30ae1299ec9013671a8a2878            27635 main/binary-amd64/Packages
+ 8e7c05b0f6559d4d2de9845293f27ebee93b57bba8bfae77fc476c5b67a4da7874de7b9dbc199a5e1ab03a2e998fc91c44e29f1f4a6499de4f4ae5119b4b5efd             5382 main/binary-amd64/Packages.gz
+Valid-Until: Sat, 21 Aug 2027 17:53:01 UTC
