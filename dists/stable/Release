@@ -1,25 +1,25 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Fri, 21 Aug 2026 17:53:09 +0000
+Date: Sun, 23 Aug 2026 15:46:24 +0000
 Description: Depot de mises a jour Boreal OS
 Label: Boreal
 Origin: Boreal
 Suite: stable
 MD5Sum:
- 84fe1f9fe42e91e52636d78784595098              181 Release
- 6cd06144acf495cac4f2fbc5d7a53115            27635 main/binary-amd64/Packages
- 73835703399719174d19fa970a518b7e             5382 main/binary-amd64/Packages.gz
+ 9917cf70a31ef2db3db30f4a2d8ad1b5              181 Release
+ 386bc1afa2f33304e1a2ba4f8f2cda5d            32993 main/binary-amd64/Packages
+ f447a4e9523dbc72ab3a9d0402a6b733             5811 main/binary-amd64/Packages.gz
 SHA1:
- 719cba8c4e297032090ebc09982b073a4c7f9f4c              181 Release
- a07e32bbe3e82cdd2ef993e4868fd0f2f1e16024            27635 main/binary-amd64/Packages
- 9347736c03b552651d92336913c08d76de607dcb             5382 main/binary-amd64/Packages.gz
+ 50f7b69be76bcdc6ffa849860c0f845b934900e4              181 Release
+ 34ff2fccdc8f6f8d72d5a57cdbc2d961f7fcb831            32993 main/binary-amd64/Packages
+ 0fa6e830178423f6b1da02fa309c7d970517e9a6             5811 main/binary-amd64/Packages.gz
 SHA256:
- 18cab51de8185b57726d1fa0fcb8b45b75fec8d26691de7291eea0e5f9704994              181 Release
- 5e3ecbc280ba09b1793016681d903d0b86a219adc1098ec2ccba7f7cbe2a9dcd            27635 main/binary-amd64/Packages
- 2d32e5ec1181a04b515f72ecbad77239109f7fc01487a8df43f42544e5e58636             5382 main/binary-amd64/Packages.gz
+ b6b7448ebc5c5b5620b7e4be40461446f4390350aff08403dc62d3fcf21e9d5e              181 Release
+ 8d1fe3316fa7722bb824b92ba6cefb3225afab5772c7c6d1a1f4cc39865b47b5            32993 main/binary-amd64/Packages
+ dc4f299db677f4e7bf96c6b64fae3860a28b624f3223d87f4a52a8c461458024             5811 main/binary-amd64/Packages.gz
 SHA512:
- 1f463b9e74eda9f9697dd5fb2959d6b83ecc6348bf66a02c47fd7e71432ee97bf6c59315ff7f56644cb0a8e16d94d21ce41de543f99858a67d422ae5b36e1521              181 Release
- 049390b88eb1935186a07d2a645ffcb7a0585a0f7e23dca06d9110854aeb54ffaf9fcf44a1a0ea230364a34f7728410a544ac7ed30ae1299ec9013671a8a2878            27635 main/binary-amd64/Packages
- 02b484fdfe5ce0e5fea4a7fbc807a82e021fac27c63efb5b3ff6c0780218bc3bc79c7c3512efe477e2a87a51c2809999b9a04a5bdf207fd2f7aa925574776310             5382 main/binary-amd64/Packages.gz
-Valid-Until: Sat, 21 Aug 2027 17:53:09 UTC
+ 33f2662c9c3e8221658d20383f4014f178624c8dae881f71d9014b7eb7fce56ec9a9323bcdf64abfccc5ac15cb92ae89375a4f6ee1fb4fd1fa641488b23c8432              181 Release
+ 9622766fbafa3e4e7082b1d19840ce05551d4d2f659f3f2f44e614cd2aa5f8ec3c32c220ac2c7faa91f97df79b30415742ca6c106a1ba8efe7b766fc388f45ca            32993 main/binary-amd64/Packages
+ 8b5af69cc5209908643a389299e1f9f7d0c539f24a66c8d960f3a9ef86f2848e41c5a1874fce659dee622e2f2d2c662ff7575eae45c830081943333475bed96d             5811 main/binary-amd64/Packages.gz
+Valid-Until: Mon, 23 Aug 2027 15:46:24 UTC

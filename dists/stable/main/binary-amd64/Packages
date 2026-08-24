@@ -431,6 +431,100 @@ Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
  N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
  identité 100 % originale (aucun asset propriétaire).
 
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.6.1
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.1_amd64.deb
+Size: 6110518
+MD5sum: 34329864e1d1979be58852190216a6d1
+SHA1: dcb6a759f77e2391e39907e45f4368a43f0ab803
+SHA256: dad237b9625c1369453ed1c4616d098cf0739ddc6313bd47fc16ea5d7f55b023
+SHA512: fd68cad08a36f0e216666bda7fd511a800c608baf4ed1a996707f6dc8999b447d7629db6092935a7aa51f1175726af12c24888f163252aac653f4cbe1c1295c4
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Boreal (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
 Package: boreal-keyring
 Architecture: all
 Version: 1.0.0
