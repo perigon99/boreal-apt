@@ -4,42 +4,42 @@ Hash: SHA512
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Sat, 17 Oct 2026 19:37:05 +0000
+Date: Sat, 17 Oct 2026 19:45:14 +0000
 Description: Depot de mises a jour Rabaska OS
 Label: Boreal
 Origin: Boreal
 Suite: stable
 MD5Sum:
- 403f6aef1813e2905c4b64c704918ce2              182 Release
+ 4515286e1a1b38edafc153d4e2eb2365              182 Release
  2b68e42410b7463b942bddfd962df9ae            55240 main/binary-amd64/Packages
- e7a0a2a374eeef18a3b20db9a626dae2             9297 main/binary-amd64/Packages.gz
+ 631ad9323f9ff1481cbdda249a30457f             9297 main/binary-amd64/Packages.gz
 SHA1:
- d79d09bf69d1cbc3af6c5b414856e70fde650122              182 Release
+ 1e88c954032555f6f11b86f64e1771bd11e7c09a              182 Release
  15ca771ca674c0c630efa42df3b7f2a9e9820ba1            55240 main/binary-amd64/Packages
- 17270d45a002d5ff65b43c87dda0fa681fc5b39c             9297 main/binary-amd64/Packages.gz
+ 4f0fd547ec53197567a14eac031bc9499c30e88a             9297 main/binary-amd64/Packages.gz
 SHA256:
- 196bec7187d3399560f9f9f7ca8b578be180389b82a9dd5c3f368ab11192448f              182 Release
+ fa41f01c75c66f42d25f7f2119b425baa2abd484d4a1e5d25a6cd4ee14a8c59e              182 Release
  0287964802cc72c7e3d58cb047812a362df8d593585f6c244cc08b36c73e3e60            55240 main/binary-amd64/Packages
- d6d8c4908b49da8549030d659f0cb1272da298345bd971f2090be2840c10eff2             9297 main/binary-amd64/Packages.gz
+ b304ccbef3e3bdfaea132232a32ae2b69252b7a038172157de916e6717d0f2a1             9297 main/binary-amd64/Packages.gz
 SHA512:
- 62fe43b4d05d8b9ef34561290625b28fbc22c3d82f75cac3cc0c662c7916599fe767e0e6016cd629c853c469b1c3630f3986e0794cb0fd0a1b657ad2cf5dacff              182 Release
+ b83151d4c992db923cd2819fc751838429b1cfdfa202daab7c8b07bd515979c2f86ef6f0bdfdec9c689db37bd3c9be1f04809a37e0a0bd8eaa1feb45aaf9f263              182 Release
  2a37c9c6f9eefd6761845dd8401601a550ce8c091656914346866e6b3ee5ed1f6c8aa7cc1216ed71efbed89e9bb49c77feca0007e0c590ce1f0e23ccd99d214d            55240 main/binary-amd64/Packages
- e3fdfa5035d32cf9541b988aec7e8c9437117aacab41128c433e3b6bf6ab9efb6429f5c9d099ddd690070df1ed6a526f87f63e9a7fc04a0686e58a53d479c9c0             9297 main/binary-amd64/Packages.gz
-Valid-Until: dim, 17 oct 2027 19:37:05 UTC
+ abb2297237925319f6ba07206cafc1b7a302762c81e3108294b0b9da9fb3628237ab5988479ec279e5a1578289ee049009cbd36445aaacc981aecc9acdf4708f             9297 main/binary-amd64/Packages.gz
+Valid-Until: Sun, 17 Oct 2027 19:45:14 UTC
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEE8WDPPzwF5VII8PbhuX0V52tIYOkFAmrTzmkSHGFwdEBtcnNl
-cnZpY2VzLmNhAAoJELl9FedrSGDpUm4QAI/jIdlMqKDLTufP0OB0NFAZlFt95tK/
-uWVefOt43VIvLMYIo1pd/giYDWoEl2A/G+zxZTQmBvxS28xdEc1RuCysjdR4zOP7
-X27XvpgAMOiACAYU1NfzMv7G8HcEIhvoJHC42aP2eDOkY5XEBpmcZdzA/tr5rXnq
-pLMC9OnyxXX3JWy0L647TTRT+TpklP7Jyd90r9GrFbiUtyu7/uPXgnTTPL2h/3Td
-QgVXoZIvwktTLsatEzKwCO4nXWxLFmuz3u9ASa4TnoDLqSzKjZf2ys/mFsMsTID9
-DYaht3z9PsyL92/R6pzkqwHjIlQeLfvag0Z+hBJnMqzRfmNHO3cnH0ca1CoosxXY
-1qHroY5Ex1qUOq/fGAjcd8NSCv28mma7t8iuPsr0TyWkP5U5V+FI6JAGF6jbuM8k
-6bPBSWOtpu7h/dL8IqgOrje3N8rpMfr59JDraC9Gld5Zl4ID/antM7ZkpOcb0V3L
-i7n38FPOn35a+i4PEW+JKYeQFldFGlomb9Stm1A4E4xYD9uEXZETY0DfkwLOqEIU
-M70OJ063rJAyDhF/FZzeCVGVrFEO6cbLRmhHxX1NwyH98Zl9HP2nHviwvY5+tB96
-ghNe7aGoaS6xs74Kg3OOj4uizmCuSqhmDDb8C2pVLQt7wBnJZDxUxgi98fPd7RWA
-7x/BxKgn3UqZ
-=lAlI
+iQJGBAEBCgAwFiEE8WDPPzwF5VII8PbhuX0V52tIYOkFAmrT0EoSHGFwdEBtcnNl
+cnZpY2VzLmNhAAoJELl9FedrSGDpJ+QQAJpxn1T6WqurHDbG4+9F56yRt1bYCVaa
+Zh233mTkdX1jsA4BHgs7TfLK8p7v/W5iuYApnCdQTaPJ8pC1O+WBwRMxdtkFE2n8
+M3ZBJ4y34w8ZJ+yqh0EdSarRFlY/f9XU7nTw1oE6vhA50iVhgPOGAWBeWu96arJd
+L/oit5APZXAHEfbLEIYymIPWc9WKf26IGmjG3op67H3GzuZ00lPSlUJrcw7c91Fj
+t47wE+3wQSb8iODTd8qyHsw2OUkao3TINQi6CQ9gjDY15Q3Y6attOlKujxeBKuO+
+tDAFlLayVq6sKgHP9eEMba0kaFkpJM2BwJQi8RlLtM2UC0c+m6hwWwzhA5lSoZYF
+OJBiB8liTJot+Tm6gvLr3nbQIRv/kzoqqwwn/L2CR1aU7KpLZP4JtHMQNzCATPmd
+AMOrtrZ3G+tIbGRPctWAuQ1IPbO8MWI3Cfcy07W0MRGY8yN+zlTXA5//QRPYVGQ1
+HtxKgJrJnY4Q1ckXW3OcEkl+VmrnPCmjbSHph2SpV67kNazbDUGGWjcVOSGOZUzc
+ROJu/khSk6NCCLSUYrJOSH70JyqCKWxljqYPeXR8oqVkNGk8A8cI04V72b3wdFBB
+fumZ38j1X08taGJjt2vixNyid2JYdD07BcdINUrgvTHFYkfbjlw4dOFvA7r2Czvl
+K3svRvnWtnXF
+=fJf5
 -----END PGP SIGNATURE-----
