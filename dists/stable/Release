@@ -1,25 +1,25 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Sat, 17 Oct 2026 22:51:23 +0000
+Date: Sun, 18 Oct 2026 15:40:40 +0000
 Description: Depot de mises a jour Rabaska OS
 Label: Boreal
 Origin: Boreal
 Suite: stable
 MD5Sum:
- b2c349cf95fdc73696ee09766a4eac17              182 Release
- 787804c02a014dd3201ab4c8ed2ff89d            80983 main/binary-amd64/Packages
- 532745dceacd77806eea1d66d5f4e05c            10265 main/binary-amd64/Packages.gz
+ 2ceaafdc8b7c6efbeb4da8e2ec254f0b              182 Release
+ d975a591e7c6223e336f09afe849276d            80983 main/binary-amd64/Packages
+ c2b10abdfced20ac12d36e719a735ce3            10262 main/binary-amd64/Packages.gz
 SHA1:
- a28cc1994fe4241c6767be94a3a612110989c109              182 Release
- b613b904e889c72b09bebe8e3a22150f2198f8e2            80983 main/binary-amd64/Packages
- b9daaeed08673d92d8b79697b35c58b719f99422            10265 main/binary-amd64/Packages.gz
+ 1f6c8db5e04fa84769fec2858c7532518cc3b7b2              182 Release
+ a105d1c773910d614530c1ca3f05abd610f77c68            80983 main/binary-amd64/Packages
+ 60c61f48644d7f4af03357d2af6b674210cbddc5            10262 main/binary-amd64/Packages.gz
 SHA256:
- 9fe60cc9ffda91987ea7d49e669d3f540d59e4d0eb1810ae05383fd620091feb              182 Release
- 6e457fc3441fadda7fd76ec207fa4d301739822cf46be18650457b67ca90b1b1            80983 main/binary-amd64/Packages
- 9eda900a8c76bbc166220f3def6c8e36205ad367904221484f1ad285a8a81575            10265 main/binary-amd64/Packages.gz
+ 2e0bc8c10116a82bc97d9c3572f6abf078052712cca7b833c8e601e163ec2315              182 Release
+ 5136fc6fa4927854a83f04f9484dd0f8dd1a7595267235c0246e0afb7dc41638            80983 main/binary-amd64/Packages
+ e3847070fe4b0cf63a12865c5ae2b557d37a09b2b27c95a12ba2f3c5aef4b9b0            10262 main/binary-amd64/Packages.gz
 SHA512:
- dde2ec92baacc67e6d6148bc3d2b5bdaf7fefd13a592c31bdf18ad803f134bc0aec99af69abe37df93fec0674010964b55d3f9ecf234d805addfdb39d1415cc7              182 Release
- 8fad7140c3febd3885fc02bd1998459e04c8ec50c10fa651a945146b2d0690582201769b1ea6ade25a347c099afd28ec108dad8463d1c5f88a3aea0566bb892d            80983 main/binary-amd64/Packages
- eeaeb26495875ace4d1ed476f22cc091278d4d93483f09a6f1ab65e748ec7d12e42a159856238e43b50f250b33782f1a05aca4700e3bbf98a7bf0b83b7c6e00c            10265 main/binary-amd64/Packages.gz
-Valid-Until: Sun, 17 Oct 2027 22:51:23 UTC
+ 285f4812dfd26142c7bd2e9ac255861f14d15c966e6200c2f7448b34006699159ac16ec69bf0468a0d4744b329f62b434a2e46f0db1ab2db7a8495ab8ec6bfa9              182 Release
+ 3e3b783c8b7fc886dcb74a88b2e0979adf3afb12171fe02c66377fc198c56fb48b986033ffca3fbb607154d5a1167d4fb98487cab05211ca2882cd7db510a73a            80983 main/binary-amd64/Packages
+ 373b4556c36de1e8244d77e2d4b634ecf1c24c0726566e64444c8ed7394fe16e4011ec5b1259687c652097ad2d34d744a64abfff207af728693fe1feac5ff666            10262 main/binary-amd64/Packages.gz
+Valid-Until: Mon, 18 Oct 2027 15:40:40 UTC

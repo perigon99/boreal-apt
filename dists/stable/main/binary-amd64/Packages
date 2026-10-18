@@ -885,11 +885,11 @@ Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
  qml6-module-qtquick-window | qml-module-qtquick-window2,
  orca, speech-dispatcher, language-pack-en, language-pack-en-base
 Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.12_amd64.deb
-Size: 7632138
-MD5sum: 077f290aed6f41989c41921950846547
-SHA1: fd8ed9490e4fb599784cd021789e4488b4abce91
-SHA256: 7b2fab34998a008aabc878ac7992061eff7d4070a05f0289958b7143bf4cec77
-SHA512: 32f11efaed50f374b0413afe6bc6da5bf5306c9dcd9d1515f27e6c140e604293e4fd8e16bf21831f0bed0fb21cf084c3512d1bde01d8835b7838f6b5d939dd17
+Size: 7632466
+MD5sum: 9d4835fec394d3beeb8e1916c31d26bb
+SHA1: a93bab3930a56f8b80fe34daa53143ab275995f0
+SHA256: bbcee9962b82e126e2d3badf89b47cb623643ac63086647e75d05f8a671d5257
+SHA512: 26c3c9dd2d98970875f239e27fa3b3b42dc30703e4fbaec257cae53f5c2e1ff338286cbdcaa4a957e816955e8da9b47e69de563b79ee54762047e45dc1d6556c
 Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
  Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
  + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
