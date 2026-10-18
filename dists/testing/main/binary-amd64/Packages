@@ -433,6 +433,902 @@ Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
 
 Package: boreal-desktop
 Architecture: amd64
+Version: 3.6.10
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca, speech-dispatcher, language-pack-en, language-pack-en-base
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.10_amd64.deb
+Size: 7677568
+MD5sum: 624385e3d354e3c1a138dd404a8f4e5a
+SHA1: b0d8a03e182d3dd7f88c61fccd46b01d324aaf5c
+SHA256: c69326d1d8f402b72f447efd646311ec3fc83ddcf4998f5414639184d659e9e5
+SHA512: cb4f59784094b0928355a6b353497573a0e9ca37db37c60f972561efcd2042b077749a49379f6abae9e54473a136baca6518b13e4a4b359992b2fbe0bacbc2a7
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.6.10 rend le bureau réactif sur les portables à 4 fils, et pose
+ l'outil de mises à jour dans la barre tant qu'une mise à jour est
+ disponible. boreal-tune ne choisit plus le gouverneur « powersave »
+ (il laissait un i5 Intel au ralenti entre deux clics) et compresse la
+ mémoire en lz4 dès que la RAM est à 4 Go ou moins. L'icône vit dans le
+ plateau de la barre (à côté du son et de l'horloge) ; un clic ouvre la
+ fenêtre. Elle disparaît au passage suivant, quand il n'y a plus rien.
+ .
+ La 3.6.8 fait vraiment tourner boreal-tune à la mise à jour. Son unité
+ est Type=oneshot avec RemainAfterExit=yes : elle reste « active (exited) »
+ après le premier boot, et le « systemctl start » du postinst y était donc
+ un no-op silencieux. Depuis toujours, chaque boreal-tune neuf livré par
+ apt n'était appliqué qu'au reboot suivant. Corrigé en restart.
+ .
+ La 3.6.7 rend le Wi-Fi réactif et n'affiche plus qu'une seule icône
+ réseau. Ubuntu livre wifi.powersave = 3 ; mesuré au banc, l'économie
+ d'énergie multipliait la latence par trois à dix (548-709 ms contre
+ 67-190 ms) et quadruplait la perte de paquets. boreal-tune la désactive
+ désormais à chaque démarrage. Par ailleurs nm-tray et nm-applet
+ démarraient tous deux depuis /etc/xdg/autostart : nm-applet est masqué.
+ .
+ La 3.6.6 empêche le wrapper lxqt-panel de tuer la barre des tâches. Il
+ forçait QT_QPA_PLATFORM=xcb sans condition pour placer les bulles d'aide
+ au-dessus de la barre ; sans serveur X joignable (labwc sans DISPLAY),
+ le panneau mourait au démarrage et rien ne le rattrapait — plus de barre
+ des tâches à chaque connexion. Le wrapper vérifie désormais que xcb tient
+ et retombe sinon sur la plateforme native : on perd le placement des
+ bulles, jamais la barre. La réassurance panneau/bureau relance également
+ sans DISPLAY au lieu d'y renoncer.
+ .
+ La 3.6.5 rend bruyant l'échec de la locale système. Le choix de langue
+ du premier allumage a besoin de root pour /etc/default/locale — c'est ce
+ fichier que lit la session graphique. Si l'élévation est refusée, le
+ bureau repart dans l'ancienne langue ; l'assistant annonçait quand même
+ « Tout est prêt » parce que le résultat de pkexec était jeté. Le verdict
+ est désormais vérifié sur le fichier système et journalisé.
+ .
+ Depuis la 3.6.3~beta5, le raccourci Super / panneau lance le menu Rust
+ (boreal-menu = boreal-menu-rs) pour que lang=en bascule l'UI immédiatement.
+ L'ancien Python reste en secours manuel : boreal-menu-py.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Rabaska (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ La 3.6.2 remplace le filigrane « Boréal » du fond d'écran (clair et
+ sombre), du splash Plymouth et des diapositives de l'installeur par
+ « Rabaska » / « Rabaska OS ». Identifiants internes (boreal-*, canal
+ Boreal:stable) inchangés.
+ .
+ La 3.6.4 (stable apt) consolide la validation labo beta15 : cycle de vie
+ panneau/bureau/menu separe (assurer_panel, assurer_desktop), theme-toggle
+ avec DISPLAY, heal_session sans redemarrage graphique, menu flash-close
+ (grace 400 ms), boreal-tablette anti-gel (exit 3, StartLimit), tooltips EN
+ monolingues, Plymouth/GRUB Rabaska dans le .deb.
+ .
+ La 3.6.3~beta15 (canal beta, pas apt prod) sépare le cycle de vie du panneau
+ (assurer_panel), du bureau (assurer_desktop) et du menu ; boreal-theme-toggle
+ capture DISPLAY avant pkill lxqt-panel ; heal_session ne redémarre plus le
+ stack graphique (fichiers locale uniquement).
+ .
+ La 3.6.3~beta14 (canal beta, pas apt prod) corrige le flash-close du menu
+ Start : Unfocused parasite à l'ouverture (XWayland) est ignoré jusqu'à
+ Focused + grâce 400 ms — le panneau reste ouvert et cliquable.
+ .
+ La 3.6.3~beta13 (canal beta, pas apt prod) coupe le gel crash-loop
+ boreal-tablette sur portable ordinaire : sonde partielle → exit 3
+ (SuccessExitStatus), StartLimit* dans [Unit], RestartPreventExitStatus=8.
+ Conserve tooltips monolingues, menu ancré, Plymouth/GRUB Rabaska, heal-session.
+ .
+ La 3.6.3~beta12 (canal beta, pas apt prod) retire WAYLAND_DISPLAY du
+ processus menu pour forcer vraiment XWayland (ancrage bas-gauche) tout en
+ réinjectant Wayland aux apps lancées.
+ .
+ La 3.6.3~beta11 (canal beta, pas apt prod) force les tooltips barre
+ strictement monolingues selon lang= (plus de « Light / Dark » / mélange
+ FR+EN sur la même barre) ; wrapper lxqt-panel xcb ; menu ancré XWayland ;
+ coins opaques ; GRUB_DISTRIBUTOR=Rabaska OS + dracut.
+ .
+ La 3.6.3~beta10 (canal beta, pas apt prod) ancre le menu Start sous XWayland
+ (Wayland ignore Position/move_to), supprime les coins noirs (fenêtre opaque +
+ rayon), force les Name= EN de TOUTES les tuiles quicklaunch (rename_app FR),
+ lance lxqt-panel via wrapper xcb pour tooltips au-dessus, livre
+ GRUB_DISTRIBUTOR=Rabaska OS (drop-in) et régénère l'initrd via dracut.
+ .
+ La 3.6.3~beta9 (canal beta, pas apt prod) migre heal locale/bureau/tooltips
+ panel en Rust (`boreal-welcome-rs --heal-session`, TDD), livre boreal-ai.desktop
+ dans le .deb, et fige les contrats QSS/Plymouth/Name=EN par cargo test.
+ .
+ La 3.6.3~beta8 (canal beta, pas apt prod) fait pointer le panel vers les
+ .desktop locaux FR/EN (chemins absolus quicklaunch) — tooltips barre alignés
+ même si Name[en] du système n'est pas lu.
+ .
+ La 3.6.3~beta7 (canal beta, pas apt prod) soigne la locale English quand
+ en_CA est absente (selfheal → en_US + LC_* alignés), force les tooltips
+ barre en anglais via overrides .desktop, rend les bulles opaques à fort
+ contraste, et livre le splash Plymouth « Rabaska » dans le .deb.
+ .
+ La 3.6.3~beta6 (canal beta, pas apt prod) aligne les libellés des icônes
+ bureau (Computer / Trash) sur lang=en au commit welcome et via selfheal —
+ plus de « Cet ordinateur / Corbeille » figés après English + logout.
+ .
+ La 3.6.3~beta5 (canal beta, pas apt prod) propage le choix English au-delà
+ de la page welcome : locale session (environment.d, LXQt, locale.conf,
+ plasma-localerc), menu qui relit lang= à chaque ouverture, repli en_US
+ si en_CA n'est pas générée, message de reconnexion honnête.
+ .
+ La 3.6.3~beta4 (canal beta, pas apt prod) propose FR/EN au premier
+ allumage (étape Langue avant style), pose la locale de session, et
+ complète les textes acheteur en anglais (welcome, menu, update,
+ .desktop).
+ .
+ La 3.6.3~beta3 remonte le filigrane « Rabaska » des fonds d'écran clair
+ et sombre : le bas du texte reste au-dessus de la barre de 60 px même
+ sur l'écran 1366x768 visé (avant : tronqué par la barre).
+ .
+ La 3.6.3~beta2 corrige l'ancrage du menu Rust sous Wayland/labwc (coin
+ bas-gauche au-dessus du bouton « R », plus centré à l'écran).
+ .
+ La 3.6.3~beta1 (canal beta, pas apt prod) sépare davantage la barre
+ claire du bureau (bar #fbf8f2 + filet 2px), et remplace les icônes
+ tray Papirus *-panel (#dfdfdf) par des overrides Boreal en encre
+ Rabaska — bluetooth / volume lisibles sur crème.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.6.11
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ network-manager-applet,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca, speech-dispatcher, language-pack-en, language-pack-en-base
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.11_amd64.deb
+Size: 7634076
+MD5sum: 8aca043274190ade244f5cce825bffdf
+SHA1: 5d6585cf19064a4348e1e5cfca8578d9198ca54a
+SHA256: 852627fec5e5c52e1c658497bf779a56bc9b5c4b30a371a837c98ba8bcc0b072
+SHA512: f55d8dae154db5533e49bb00ef26e6e1620a0d9c7b911e797b4b75d14b5065106379160aae53a1b193f34c331c281ff92f5a79e93d7296e5e61e4c8c3930319c
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.6.11 met l'applet NetworkManager dans la barre à la place de
+ nm-tray. nm-tray est une liste trop courte, et son icône disparaît
+ dès qu'aucun réseau connu n'est à portée : chez le client, plus moyen
+ de voir les Wi-Fi autour. nm-applet --indicator reste affiché et
+ ouvre la liste habituelle (signal, cadenas, mot de passe). Le bouton
+ Démarrer, martelé, n'empile plus plusieurs menus.
+ .
+ La 3.6.10 rend le bureau réactif sur les portables à 4 fils, et pose
+ l'outil de mises à jour dans la barre tant qu'une mise à jour est
+ disponible. boreal-tune ne choisit plus le gouverneur « powersave »
+ (il laissait un i5 Intel au ralenti entre deux clics) et compresse la
+ mémoire en lz4 dès que la RAM est à 4 Go ou moins. L'icône vit dans le
+ plateau de la barre (à côté du son et de l'horloge) ; un clic ouvre la
+ fenêtre. Elle disparaît au passage suivant, quand il n'y a plus rien.
+ .
+ La 3.6.8 fait vraiment tourner boreal-tune à la mise à jour. Son unité
+ est Type=oneshot avec RemainAfterExit=yes : elle reste « active (exited) »
+ après le premier boot, et le « systemctl start » du postinst y était donc
+ un no-op silencieux. Depuis toujours, chaque boreal-tune neuf livré par
+ apt n'était appliqué qu'au reboot suivant. Corrigé en restart.
+ .
+ La 3.6.7 rend le Wi-Fi réactif et n'affiche plus qu'une seule icône
+ réseau. Ubuntu livre wifi.powersave = 3 ; mesuré au banc, l'économie
+ d'énergie multipliait la latence par trois à dix (548-709 ms contre
+ 67-190 ms) et quadruplait la perte de paquets. boreal-tune la désactive
+ désormais à chaque démarrage. Par ailleurs nm-tray et nm-applet
+ démarraient tous deux depuis /etc/xdg/autostart : nm-applet est masqué.
+ .
+ La 3.6.6 empêche le wrapper lxqt-panel de tuer la barre des tâches. Il
+ forçait QT_QPA_PLATFORM=xcb sans condition pour placer les bulles d'aide
+ au-dessus de la barre ; sans serveur X joignable (labwc sans DISPLAY),
+ le panneau mourait au démarrage et rien ne le rattrapait — plus de barre
+ des tâches à chaque connexion. Le wrapper vérifie désormais que xcb tient
+ et retombe sinon sur la plateforme native : on perd le placement des
+ bulles, jamais la barre. La réassurance panneau/bureau relance également
+ sans DISPLAY au lieu d'y renoncer.
+ .
+ La 3.6.5 rend bruyant l'échec de la locale système. Le choix de langue
+ du premier allumage a besoin de root pour /etc/default/locale — c'est ce
+ fichier que lit la session graphique. Si l'élévation est refusée, le
+ bureau repart dans l'ancienne langue ; l'assistant annonçait quand même
+ « Tout est prêt » parce que le résultat de pkexec était jeté. Le verdict
+ est désormais vérifié sur le fichier système et journalisé.
+ .
+ Depuis la 3.6.3~beta5, le raccourci Super / panneau lance le menu Rust
+ (boreal-menu = boreal-menu-rs) pour que lang=en bascule l'UI immédiatement.
+ L'ancien Python reste en secours manuel : boreal-menu-py.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Rabaska (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ La 3.6.2 remplace le filigrane « Boréal » du fond d'écran (clair et
+ sombre), du splash Plymouth et des diapositives de l'installeur par
+ « Rabaska » / « Rabaska OS ». Identifiants internes (boreal-*, canal
+ Boreal:stable) inchangés.
+ .
+ La 3.6.4 (stable apt) consolide la validation labo beta15 : cycle de vie
+ panneau/bureau/menu separe (assurer_panel, assurer_desktop), theme-toggle
+ avec DISPLAY, heal_session sans redemarrage graphique, menu flash-close
+ (grace 400 ms), boreal-tablette anti-gel (exit 3, StartLimit), tooltips EN
+ monolingues, Plymouth/GRUB Rabaska dans le .deb.
+ .
+ La 3.6.3~beta15 (canal beta, pas apt prod) sépare le cycle de vie du panneau
+ (assurer_panel), du bureau (assurer_desktop) et du menu ; boreal-theme-toggle
+ capture DISPLAY avant pkill lxqt-panel ; heal_session ne redémarre plus le
+ stack graphique (fichiers locale uniquement).
+ .
+ La 3.6.3~beta14 (canal beta, pas apt prod) corrige le flash-close du menu
+ Start : Unfocused parasite à l'ouverture (XWayland) est ignoré jusqu'à
+ Focused + grâce 400 ms — le panneau reste ouvert et cliquable.
+ .
+ La 3.6.3~beta13 (canal beta, pas apt prod) coupe le gel crash-loop
+ boreal-tablette sur portable ordinaire : sonde partielle → exit 3
+ (SuccessExitStatus), StartLimit* dans [Unit], RestartPreventExitStatus=8.
+ Conserve tooltips monolingues, menu ancré, Plymouth/GRUB Rabaska, heal-session.
+ .
+ La 3.6.3~beta12 (canal beta, pas apt prod) retire WAYLAND_DISPLAY du
+ processus menu pour forcer vraiment XWayland (ancrage bas-gauche) tout en
+ réinjectant Wayland aux apps lancées.
+ .
+ La 3.6.3~beta11 (canal beta, pas apt prod) force les tooltips barre
+ strictement monolingues selon lang= (plus de « Light / Dark » / mélange
+ FR+EN sur la même barre) ; wrapper lxqt-panel xcb ; menu ancré XWayland ;
+ coins opaques ; GRUB_DISTRIBUTOR=Rabaska OS + dracut.
+ .
+ La 3.6.3~beta10 (canal beta, pas apt prod) ancre le menu Start sous XWayland
+ (Wayland ignore Position/move_to), supprime les coins noirs (fenêtre opaque +
+ rayon), force les Name= EN de TOUTES les tuiles quicklaunch (rename_app FR),
+ lance lxqt-panel via wrapper xcb pour tooltips au-dessus, livre
+ GRUB_DISTRIBUTOR=Rabaska OS (drop-in) et régénère l'initrd via dracut.
+ .
+ La 3.6.3~beta9 (canal beta, pas apt prod) migre heal locale/bureau/tooltips
+ panel en Rust (`boreal-welcome-rs --heal-session`, TDD), livre boreal-ai.desktop
+ dans le .deb, et fige les contrats QSS/Plymouth/Name=EN par cargo test.
+ .
+ La 3.6.3~beta8 (canal beta, pas apt prod) fait pointer le panel vers les
+ .desktop locaux FR/EN (chemins absolus quicklaunch) — tooltips barre alignés
+ même si Name[en] du système n'est pas lu.
+ .
+ La 3.6.3~beta7 (canal beta, pas apt prod) soigne la locale English quand
+ en_CA est absente (selfheal → en_US + LC_* alignés), force les tooltips
+ barre en anglais via overrides .desktop, rend les bulles opaques à fort
+ contraste, et livre le splash Plymouth « Rabaska » dans le .deb.
+ .
+ La 3.6.3~beta6 (canal beta, pas apt prod) aligne les libellés des icônes
+ bureau (Computer / Trash) sur lang=en au commit welcome et via selfheal —
+ plus de « Cet ordinateur / Corbeille » figés après English + logout.
+ .
+ La 3.6.3~beta5 (canal beta, pas apt prod) propage le choix English au-delà
+ de la page welcome : locale session (environment.d, LXQt, locale.conf,
+ plasma-localerc), menu qui relit lang= à chaque ouverture, repli en_US
+ si en_CA n'est pas générée, message de reconnexion honnête.
+ .
+ La 3.6.3~beta4 (canal beta, pas apt prod) propose FR/EN au premier
+ allumage (étape Langue avant style), pose la locale de session, et
+ complète les textes acheteur en anglais (welcome, menu, update,
+ .desktop).
+ .
+ La 3.6.3~beta3 remonte le filigrane « Rabaska » des fonds d'écran clair
+ et sombre : le bas du texte reste au-dessus de la barre de 60 px même
+ sur l'écran 1366x768 visé (avant : tronqué par la barre).
+ .
+ La 3.6.3~beta2 corrige l'ancrage du menu Rust sous Wayland/labwc (coin
+ bas-gauche au-dessus du bouton « R », plus centré à l'écran).
+ .
+ La 3.6.3~beta1 (canal beta, pas apt prod) sépare davantage la barre
+ claire du bureau (bar #fbf8f2 + filet 2px), et remplace les icônes
+ tray Papirus *-panel (#dfdfdf) par des overrides Boreal en encre
+ Rabaska — bluetooth / volume lisibles sur crème.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.6.12
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ network-manager-applet,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca, speech-dispatcher, language-pack-en, language-pack-en-base
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.12_amd64.deb
+Size: 7632466
+MD5sum: 9d4835fec394d3beeb8e1916c31d26bb
+SHA1: a93bab3930a56f8b80fe34daa53143ab275995f0
+SHA256: bbcee9962b82e126e2d3badf89b47cb623643ac63086647e75d05f8a671d5257
+SHA512: 26c3c9dd2d98970875f239e27fa3b3b42dc30703e4fbaec257cae53f5c2e1ff338286cbdcaa4a957e816955e8da9b47e69de563b79ee54762047e45dc1d6556c
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.6.12 enlève /usr/local/bin/lxqt-panel. Ce fichier Rabaska passait
+ devant le vrai panneau et le faisait quitter sous Wayland. Réinstaller
+ lxqt-panel ne changeait rien : la session relançait notre fichier.
+ La mise à jour le supprime. Au redémarrage, la barre revient.
+ .
+ La 3.6.11 met l'applet NetworkManager dans la barre à la place de
+ nm-tray. nm-tray est une liste trop courte, et son icône disparaît
+ dès qu'aucun réseau connu n'est à portée : chez le client, plus moyen
+ de voir les Wi-Fi autour. nm-applet --indicator reste affiché et
+ ouvre la liste habituelle (signal, cadenas, mot de passe). Le bouton
+ Démarrer, martelé, n'empile plus plusieurs menus.
+ .
+ La 3.6.10 rend le bureau réactif sur les portables à 4 fils, et pose
+ l'outil de mises à jour dans la barre tant qu'une mise à jour est
+ disponible. boreal-tune ne choisit plus le gouverneur « powersave »
+ (il laissait un i5 Intel au ralenti entre deux clics) et compresse la
+ mémoire en lz4 dès que la RAM est à 4 Go ou moins. L'icône vit dans le
+ plateau de la barre (à côté du son et de l'horloge) ; un clic ouvre la
+ fenêtre. Elle disparaît au passage suivant, quand il n'y a plus rien.
+ .
+ La 3.6.8 fait vraiment tourner boreal-tune à la mise à jour. Son unité
+ est Type=oneshot avec RemainAfterExit=yes : elle reste « active (exited) »
+ après le premier boot, et le « systemctl start » du postinst y était donc
+ un no-op silencieux. Depuis toujours, chaque boreal-tune neuf livré par
+ apt n'était appliqué qu'au reboot suivant. Corrigé en restart.
+ .
+ La 3.6.7 rend le Wi-Fi réactif et n'affiche plus qu'une seule icône
+ réseau. Ubuntu livre wifi.powersave = 3 ; mesuré au banc, l'économie
+ d'énergie multipliait la latence par trois à dix (548-709 ms contre
+ 67-190 ms) et quadruplait la perte de paquets. boreal-tune la désactive
+ désormais à chaque démarrage. Par ailleurs nm-tray et nm-applet
+ démarraient tous deux depuis /etc/xdg/autostart : nm-applet est masqué.
+ .
+ La 3.6.6 empêche le wrapper lxqt-panel de tuer la barre des tâches. Il
+ forçait QT_QPA_PLATFORM=xcb sans condition pour placer les bulles d'aide
+ au-dessus de la barre ; sans serveur X joignable (labwc sans DISPLAY),
+ le panneau mourait au démarrage et rien ne le rattrapait — plus de barre
+ des tâches à chaque connexion. Le wrapper vérifie désormais que xcb tient
+ et retombe sinon sur la plateforme native : on perd le placement des
+ bulles, jamais la barre. La réassurance panneau/bureau relance également
+ sans DISPLAY au lieu d'y renoncer.
+ .
+ La 3.6.5 rend bruyant l'échec de la locale système. Le choix de langue
+ du premier allumage a besoin de root pour /etc/default/locale — c'est ce
+ fichier que lit la session graphique. Si l'élévation est refusée, le
+ bureau repart dans l'ancienne langue ; l'assistant annonçait quand même
+ « Tout est prêt » parce que le résultat de pkexec était jeté. Le verdict
+ est désormais vérifié sur le fichier système et journalisé.
+ .
+ Depuis la 3.6.3~beta5, le raccourci Super / panneau lance le menu Rust
+ (boreal-menu = boreal-menu-rs) pour que lang=en bascule l'UI immédiatement.
+ L'ancien Python reste en secours manuel : boreal-menu-py.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Rabaska (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ La 3.6.2 remplace le filigrane « Boréal » du fond d'écran (clair et
+ sombre), du splash Plymouth et des diapositives de l'installeur par
+ « Rabaska » / « Rabaska OS ». Identifiants internes (boreal-*, canal
+ Boreal:stable) inchangés.
+ .
+ La 3.6.4 (stable apt) consolide la validation labo beta15 : cycle de vie
+ panneau/bureau/menu separe (assurer_panel, assurer_desktop), theme-toggle
+ avec DISPLAY, heal_session sans redemarrage graphique, menu flash-close
+ (grace 400 ms), boreal-tablette anti-gel (exit 3, StartLimit), tooltips EN
+ monolingues, Plymouth/GRUB Rabaska dans le .deb.
+ .
+ La 3.6.3~beta15 (canal beta, pas apt prod) sépare le cycle de vie du panneau
+ (assurer_panel), du bureau (assurer_desktop) et du menu ; boreal-theme-toggle
+ capture DISPLAY avant pkill lxqt-panel ; heal_session ne redémarre plus le
+ stack graphique (fichiers locale uniquement).
+ .
+ La 3.6.3~beta14 (canal beta, pas apt prod) corrige le flash-close du menu
+ Start : Unfocused parasite à l'ouverture (XWayland) est ignoré jusqu'à
+ Focused + grâce 400 ms — le panneau reste ouvert et cliquable.
+ .
+ La 3.6.3~beta13 (canal beta, pas apt prod) coupe le gel crash-loop
+ boreal-tablette sur portable ordinaire : sonde partielle → exit 3
+ (SuccessExitStatus), StartLimit* dans [Unit], RestartPreventExitStatus=8.
+ Conserve tooltips monolingues, menu ancré, Plymouth/GRUB Rabaska, heal-session.
+ .
+ La 3.6.3~beta12 (canal beta, pas apt prod) retire WAYLAND_DISPLAY du
+ processus menu pour forcer vraiment XWayland (ancrage bas-gauche) tout en
+ réinjectant Wayland aux apps lancées.
+ .
+ La 3.6.3~beta11 (canal beta, pas apt prod) force les tooltips barre
+ strictement monolingues selon lang= (plus de « Light / Dark » / mélange
+ FR+EN sur la même barre) ; wrapper lxqt-panel xcb ; menu ancré XWayland ;
+ coins opaques ; GRUB_DISTRIBUTOR=Rabaska OS + dracut.
+ .
+ La 3.6.3~beta10 (canal beta, pas apt prod) ancre le menu Start sous XWayland
+ (Wayland ignore Position/move_to), supprime les coins noirs (fenêtre opaque +
+ rayon), force les Name= EN de TOUTES les tuiles quicklaunch (rename_app FR),
+ lance lxqt-panel via wrapper xcb pour tooltips au-dessus, livre
+ GRUB_DISTRIBUTOR=Rabaska OS (drop-in) et régénère l'initrd via dracut.
+ .
+ La 3.6.3~beta9 (canal beta, pas apt prod) migre heal locale/bureau/tooltips
+ panel en Rust (`boreal-welcome-rs --heal-session`, TDD), livre boreal-ai.desktop
+ dans le .deb, et fige les contrats QSS/Plymouth/Name=EN par cargo test.
+ .
+ La 3.6.3~beta8 (canal beta, pas apt prod) fait pointer le panel vers les
+ .desktop locaux FR/EN (chemins absolus quicklaunch) — tooltips barre alignés
+ même si Name[en] du système n'est pas lu.
+ .
+ La 3.6.3~beta7 (canal beta, pas apt prod) soigne la locale English quand
+ en_CA est absente (selfheal → en_US + LC_* alignés), force les tooltips
+ barre en anglais via overrides .desktop, rend les bulles opaques à fort
+ contraste, et livre le splash Plymouth « Rabaska » dans le .deb.
+ .
+ La 3.6.3~beta6 (canal beta, pas apt prod) aligne les libellés des icônes
+ bureau (Computer / Trash) sur lang=en au commit welcome et via selfheal —
+ plus de « Cet ordinateur / Corbeille » figés après English + logout.
+ .
+ La 3.6.3~beta5 (canal beta, pas apt prod) propage le choix English au-delà
+ de la page welcome : locale session (environment.d, LXQt, locale.conf,
+ plasma-localerc), menu qui relit lang= à chaque ouverture, repli en_US
+ si en_CA n'est pas générée, message de reconnexion honnête.
+ .
+ La 3.6.3~beta4 (canal beta, pas apt prod) propose FR/EN au premier
+ allumage (étape Langue avant style), pose la locale de session, et
+ complète les textes acheteur en anglais (welcome, menu, update,
+ .desktop).
+ .
+ La 3.6.3~beta3 remonte le filigrane « Rabaska » des fonds d'écran clair
+ et sombre : le bas du texte reste au-dessus de la barre de 60 px même
+ sur l'écran 1366x768 visé (avant : tronqué par la barre).
+ .
+ La 3.6.3~beta2 corrige l'ancrage du menu Rust sous Wayland/labwc (coin
+ bas-gauche au-dessus du bouton « R », plus centré à l'écran).
+ .
+ La 3.6.3~beta1 (canal beta, pas apt prod) sépare davantage la barre
+ claire du bureau (bar #fbf8f2 + filet 2px), et remplace les icônes
+ tray Papirus *-panel (#dfdfdf) par des overrides Boreal en encre
+ Rabaska — bluetooth / volume lisibles sur crème.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.6.13
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ network-manager-applet,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca, speech-dispatcher, language-pack-en, language-pack-en-base
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.13_amd64.deb
+Size: 7564242
+MD5sum: 8cb4c19f83c47a6d2ea140904cecbae8
+SHA1: 5d22382f87bd87c479a23eb9f0ca7f4dfc548ad7
+SHA256: 453706df4a6f8cf79ba64dbf6e2301a758b8e07157bf58d6777f31436658baa3
+SHA512: 14daa8c1234df76e87a66e7be9c6e3733eb4fa63645f7e0287dbb1f1ccad77811f1ef09487a02789364663d67d32940901ee1db64f1a75432b947ae5707d707d
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ La 3.6.13 corrige la boîte noire (montage FAT32 seulement, journaux
+ root:adm 0640), l'assistant réseau, la langue et l'installation Edge
+ (plus de commande root construite par le shell). Thunderbird entre
+ dans les mises à jour automatiques. Les deux extensions Chromium ne
+ se mettent plus à jour toutes seules depuis Google.
+ .
+ La 3.6.12 enlève /usr/local/bin/lxqt-panel. Ce fichier Rabaska passait
+ devant le vrai panneau et le faisait quitter sous Wayland. Réinstaller
+ lxqt-panel ne changeait rien : la session relançait notre fichier.
+ La mise à jour le supprime. Au redémarrage, la barre revient.
+ .
+ La 3.6.11 met l'applet NetworkManager dans la barre à la place de
+ nm-tray. nm-tray est une liste trop courte, et son icône disparaît
+ dès qu'aucun réseau connu n'est à portée : chez le client, plus moyen
+ de voir les Wi-Fi autour. nm-applet --indicator reste affiché et
+ ouvre la liste habituelle (signal, cadenas, mot de passe). Le bouton
+ Démarrer, martelé, n'empile plus plusieurs menus.
+ .
+ La 3.6.10 rend le bureau réactif sur les portables à 4 fils, et pose
+ l'outil de mises à jour dans la barre tant qu'une mise à jour est
+ disponible. boreal-tune ne choisit plus le gouverneur « powersave »
+ (il laissait un i5 Intel au ralenti entre deux clics) et compresse la
+ mémoire en lz4 dès que la RAM est à 4 Go ou moins. L'icône vit dans le
+ plateau de la barre (à côté du son et de l'horloge) ; un clic ouvre la
+ fenêtre. Elle disparaît au passage suivant, quand il n'y a plus rien.
+ .
+ La 3.6.8 fait vraiment tourner boreal-tune à la mise à jour. Son unité
+ est Type=oneshot avec RemainAfterExit=yes : elle reste « active (exited) »
+ après le premier boot, et le « systemctl start » du postinst y était donc
+ un no-op silencieux. Depuis toujours, chaque boreal-tune neuf livré par
+ apt n'était appliqué qu'au reboot suivant. Corrigé en restart.
+ .
+ La 3.6.7 rend le Wi-Fi réactif et n'affiche plus qu'une seule icône
+ réseau. Ubuntu livre wifi.powersave = 3 ; mesuré au banc, l'économie
+ d'énergie multipliait la latence par trois à dix (548-709 ms contre
+ 67-190 ms) et quadruplait la perte de paquets. boreal-tune la désactive
+ désormais à chaque démarrage. Par ailleurs nm-tray et nm-applet
+ démarraient tous deux depuis /etc/xdg/autostart : nm-applet est masqué.
+ .
+ La 3.6.6 empêche le wrapper lxqt-panel de tuer la barre des tâches. Il
+ forçait QT_QPA_PLATFORM=xcb sans condition pour placer les bulles d'aide
+ au-dessus de la barre ; sans serveur X joignable (labwc sans DISPLAY),
+ le panneau mourait au démarrage et rien ne le rattrapait — plus de barre
+ des tâches à chaque connexion. Le wrapper vérifie désormais que xcb tient
+ et retombe sinon sur la plateforme native : on perd le placement des
+ bulles, jamais la barre. La réassurance panneau/bureau relance également
+ sans DISPLAY au lieu d'y renoncer.
+ .
+ La 3.6.5 rend bruyant l'échec de la locale système. Le choix de langue
+ du premier allumage a besoin de root pour /etc/default/locale — c'est ce
+ fichier que lit la session graphique. Si l'élévation est refusée, le
+ bureau repart dans l'ancienne langue ; l'assistant annonçait quand même
+ « Tout est prêt » parce que le résultat de pkexec était jeté. Le verdict
+ est désormais vérifié sur le fichier système et journalisé.
+ .
+ Depuis la 3.6.3~beta5, le raccourci Super / panneau lance le menu Rust
+ (boreal-menu = boreal-menu-rs) pour que lang=en bascule l'UI immédiatement.
+ L'ancien Python reste en secours manuel : boreal-menu-py.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Rabaska (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ La 3.6.2 remplace le filigrane « Boréal » du fond d'écran (clair et
+ sombre), du splash Plymouth et des diapositives de l'installeur par
+ « Rabaska » / « Rabaska OS ». Identifiants internes (boreal-*, canal
+ Boreal:stable) inchangés.
+ .
+ La 3.6.4 (stable apt) consolide la validation labo beta15 : cycle de vie
+ panneau/bureau/menu separe (assurer_panel, assurer_desktop), theme-toggle
+ avec DISPLAY, heal_session sans redemarrage graphique, menu flash-close
+ (grace 400 ms), boreal-tablette anti-gel (exit 3, StartLimit), tooltips EN
+ monolingues, Plymouth/GRUB Rabaska dans le .deb.
+ .
+ La 3.6.3~beta15 (canal beta, pas apt prod) sépare le cycle de vie du panneau
+ (assurer_panel), du bureau (assurer_desktop) et du menu ; boreal-theme-toggle
+ capture DISPLAY avant pkill lxqt-panel ; heal_session ne redémarre plus le
+ stack graphique (fichiers locale uniquement).
+ .
+ La 3.6.3~beta14 (canal beta, pas apt prod) corrige le flash-close du menu
+ Start : Unfocused parasite à l'ouverture (XWayland) est ignoré jusqu'à
+ Focused + grâce 400 ms — le panneau reste ouvert et cliquable.
+ .
+ La 3.6.3~beta13 (canal beta, pas apt prod) coupe le gel crash-loop
+ boreal-tablette sur portable ordinaire : sonde partielle → exit 3
+ (SuccessExitStatus), StartLimit* dans [Unit], RestartPreventExitStatus=8.
+ Conserve tooltips monolingues, menu ancré, Plymouth/GRUB Rabaska, heal-session.
+ .
+ La 3.6.3~beta12 (canal beta, pas apt prod) retire WAYLAND_DISPLAY du
+ processus menu pour forcer vraiment XWayland (ancrage bas-gauche) tout en
+ réinjectant Wayland aux apps lancées.
+ .
+ La 3.6.3~beta11 (canal beta, pas apt prod) force les tooltips barre
+ strictement monolingues selon lang= (plus de « Light / Dark » / mélange
+ FR+EN sur la même barre) ; wrapper lxqt-panel xcb ; menu ancré XWayland ;
+ coins opaques ; GRUB_DISTRIBUTOR=Rabaska OS + dracut.
+ .
+ La 3.6.3~beta10 (canal beta, pas apt prod) ancre le menu Start sous XWayland
+ (Wayland ignore Position/move_to), supprime les coins noirs (fenêtre opaque +
+ rayon), force les Name= EN de TOUTES les tuiles quicklaunch (rename_app FR),
+ lance lxqt-panel via wrapper xcb pour tooltips au-dessus, livre
+ GRUB_DISTRIBUTOR=Rabaska OS (drop-in) et régénère l'initrd via dracut.
+ .
+ La 3.6.3~beta9 (canal beta, pas apt prod) migre heal locale/bureau/tooltips
+ panel en Rust (`boreal-welcome-rs --heal-session`, TDD), livre boreal-ai.desktop
+ dans le .deb, et fige les contrats QSS/Plymouth/Name=EN par cargo test.
+ .
+ La 3.6.3~beta8 (canal beta, pas apt prod) fait pointer le panel vers les
+ .desktop locaux FR/EN (chemins absolus quicklaunch) — tooltips barre alignés
+ même si Name[en] du système n'est pas lu.
+ .
+ La 3.6.3~beta7 (canal beta, pas apt prod) soigne la locale English quand
+ en_CA est absente (selfheal → en_US + LC_* alignés), force les tooltips
+ barre en anglais via overrides .desktop, rend les bulles opaques à fort
+ contraste, et livre le splash Plymouth « Rabaska » dans le .deb.
+ .
+ La 3.6.3~beta6 (canal beta, pas apt prod) aligne les libellés des icônes
+ bureau (Computer / Trash) sur lang=en au commit welcome et via selfheal —
+ plus de « Cet ordinateur / Corbeille » figés après English + logout.
+ .
+ La 3.6.3~beta5 (canal beta, pas apt prod) propage le choix English au-delà
+ de la page welcome : locale session (environment.d, LXQt, locale.conf,
+ plasma-localerc), menu qui relit lang= à chaque ouverture, repli en_US
+ si en_CA n'est pas générée, message de reconnexion honnête.
+ .
+ La 3.6.3~beta4 (canal beta, pas apt prod) propose FR/EN au premier
+ allumage (étape Langue avant style), pose la locale de session, et
+ complète les textes acheteur en anglais (welcome, menu, update,
+ .desktop).
+ .
+ La 3.6.3~beta3 remonte le filigrane « Rabaska » des fonds d'écran clair
+ et sombre : le bas du texte reste au-dessus de la barre de 60 px même
+ sur l'écran 1366x768 visé (avant : tronqué par la barre).
+ .
+ La 3.6.3~beta2 corrige l'ancrage du menu Rust sous Wayland/labwc (coin
+ bas-gauche au-dessus du bouton « R », plus centré à l'écran).
+ .
+ La 3.6.3~beta1 (canal beta, pas apt prod) sépare davantage la barre
+ claire du bureau (bar #fbf8f2 + filet 2px), et remplace les icônes
+ tray Papirus *-panel (#dfdfdf) par des overrides Boreal en encre
+ Rabaska — bluetooth / volume lisibles sur crème.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
+Package: boreal-desktop
+Architecture: amd64
 Version: 3.6.1
 Priority: optional
 Section: x11
@@ -521,6 +1417,183 @@ Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
  « plus contrastées », les mêmes choix réversibles dans Affichage et
  confort, et Orca en Recommends. L'assistant Rust est le chemin du
  premier jour.
+ .
+ N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
+ identité 100 % originale (aucun asset propriétaire).
+
+Package: boreal-desktop
+Architecture: amd64
+Version: 3.6.4
+Priority: optional
+Section: x11
+Maintainer: MR Services <apt@mrservices.ca>
+Depends: lxqt-panel, openbox, lxqt-session, sddm, python3, python3-pyqt5,
+ qt5-style-kvantum, papirus-icon-theme, network-manager,
+ pcmanfm-qt, brightnessctl, gvfs, gvfs-backends, gvfs-fuse, qps,
+ zram-tools, udev, libglib2.0-bin, squeekboard,
+ qml6-module-qtquick-virtualkeyboard
+Recommends: chromium-browser | chromium, thunderbird, lximage-qt, lxtask,
+ va-driver-all, vainfo, mesa-va-drivers, mesa-vdpau-drivers,
+ qml6-module-qtquick-controls | qml-module-qtquick-controls2,
+ qml6-module-qtquick-window | qml-module-qtquick-window2,
+ orca, language-pack-en, language-pack-en-base
+Filename: pool/main/b/boreal-desktop/boreal-desktop_3.6.4_amd64.deb
+Size: 7613650
+MD5sum: 939a4f588efde0d20a3b4f3f80651201
+SHA1: 4053e48832062482e4f745d071262698776f9116
+SHA256: 3380214d4e593174785fa333831acfde6af30d0c74f7badabdb80e9e128cb0c6
+SHA512: 41ef419989cf60dc91c3e9ab133db581f4ad735e9cf87ee89947aa837d03b630bf039aeeca9e7395baee6a818f273086902fb04f5eb9485675cb0df4d787dca0
+Description: Bureau « Rabaska OS » pour Lubuntu (LXQt)
+ Thème crème & terracotta à plat (sans compositeur), polices Hanken Grotesk
+ + Newsreader, menu natif LXQt, écran de connexion SDDM et assistant de
+ premier démarrage. Défauts d'interface au niveau système (survivent aux
+ mises à jour via conffiles ; les nouveaux comptes héritent via /etc/skel).
+ .
+ Outillage Rust natif ultra-léger : boreal-tune (binaire statique, zéro
+ dépendance) adapte la machine à SON matériel à chaque démarrage —
+ ordonnanceur disque par type (HDD/SSD), ZRAM dimensionné selon la RAM,
+ réglages mémoire sysctl, plafonnement des journaux. Tout est journalisé
+ dans journald (journalctl -t boreal-tune).
+ .
+ Depuis la 3.1.0, le menu Démarrer réécrit en Rust (boreal-menu-rs, rendu
+ 100% logiciel iced/tiny-skia, zéro API GPU) est livré EN COHABITATION à
+ /usr/local/bin/boreal-menu-rs. Le menu Python reste l'actif : le raccourci
+ Super, les .desktop et l'autostart sont inchangés. Pour l'essayer :
+ pkill -f '/usr/local/bin/boreal-menu' ; setsid boreal-menu-rs --daemon &
+ (les deux partagent le verrou d'instance, Super bascule donc le Rust).
+ Voir PROTOCOLE-TEST-MENU-RUST.md.
+ .
+ Depuis la 3.6.3~beta5, le raccourci Super / panneau lance le menu Rust
+ (boreal-menu = boreal-menu-rs) pour que lang=en bascule l'UI immédiatement.
+ L'ancien Python reste en secours manuel : boreal-menu-py.
+ .
+ La 3.1.1 ajoute boreal-wait : attente evenementielle de processus
+ (pidfd_open + poll) utilisee par boreal-theme-toggle a la place de ses
+ boucles « pgrep ; sleep 0.2 ». Mesure sur un processus mettant ~250 ms a
+ fermer : 405 ms -> 257 ms par attente, et il y en a trois sur ce chemin de
+ clic. Le script retombe sur ses anciennes boucles si boreal-wait est
+ absent.
+ .
+ La 3.1.2 livre les 8 correctifs de l'audit adverse du menu Rust (clic
+ exterieur ferme le menu, rafale de Super ne tue plus le pont SIGUSR1, plus
+ de fenetre orpheline ni de zombies, Retour fidele pendant le debounce,
+ verrou degrade non silencieux, hauteur de barre exacte), les coins arrondis
+ reellement transparents sous labwc (rectangle assume sur X11), l'assistant
+ boreal-welcome-rs en cohabitation, boreal-selfheal sur boreal-wait, et la
+ reparation de boreal-language (plantait a l'ouverture).
+ .
+ La 3.2.0 ajoute le gestionnaire de mises a jour Rabaska (boreal-update et
+ boreal-update-verif, Rust, rendu 100% logiciel), son action polkit en
+ francais, son entree de menu « Mises a jour » et son minuteur systemd
+ UTILISATEUR (verification quotidienne, notification en francais, un clic
+ ouvre la fenetre). EN COHABITATION : lubuntu-update-notifier,
+ unattended-upgrades, Discover et PackageKit restent installes et actifs, et
+ /etc/update-manager/release-upgrades n'est pas touche. Aucun retrait avant
+ validation sur portable physique.
+ .
+ La 3.3.0 rend les convertibles 360° utilisables au doigt. Écran replié en
+ tablette, cliquer dans un champ texte n'ouvrait AUCUN clavier : la machine
+ devenait inutilisable sans clavier physique. Le paquet ajoute
+ boreal-tablette (Rust, zéro dépendance hors libc), qui suit le contacteur
+ SW_TABLET_MODE du noyau et bascule la clé d'accessibilité que le clavier à
+ l'écran surveille — sans scrutation : le processus dort dans read(2) et ne
+ consomme aucun temps CPU tant que l'écran ne bouge pas. Sont livrés avec
+ lui son unité systemd UTILISATEUR (activée pour tous les comptes au
+ premier install), une règle udev qui donne à la session la lecture du SEUL
+ périphérique à commutateurs, et un lanceur d'autostart.
+ .
+ AUCUNE RÉGRESSION sur un portable ordinaire, qui reste l'immense majorité
+ du parc : la clé part à false, et le lanceur ne démarre même pas le clavier
+ sur une machine dépourvue de contacteur de mode tablette — rien de résident
+ en plus, pas un octet de mémoire. Le clavier lui-même (squeekboard) est un
+ Recommends : installé par défaut, il peut être écarté sur une machine dont
+ on sait qu'elle ne se replie pas.
+ .
+ La 3.6.1 affiche le logo R (Rabaska OS) partout où l'acheteur le voit,
+ et livre l'accessibilité du premier allumage : quatre questions (style,
+ taille du texte, couleurs, rythme), palettes « plus distinctes » et
+ « plus contrastées », les mêmes choix réversibles dans Affichage et
+ confort, et Orca en Recommends. L'assistant Rust est le chemin du
+ premier jour.
+ .
+ La 3.6.2 remplace le filigrane « Boréal » du fond d'écran (clair et
+ sombre), du splash Plymouth et des diapositives de l'installeur par
+ « Rabaska » / « Rabaska OS ». Identifiants internes (boreal-*, canal
+ Boreal:stable) inchangés.
+ .
+ La 3.6.4 (stable apt) consolide la validation labo beta15 : cycle de vie
+ panneau/bureau/menu separe (assurer_panel, assurer_desktop), theme-toggle
+ avec DISPLAY, heal_session sans redemarrage graphique, menu flash-close
+ (grace 400 ms), boreal-tablette anti-gel (exit 3, StartLimit), tooltips EN
+ monolingues, Plymouth/GRUB Rabaska dans le .deb.
+ .
+ La 3.6.3~beta15 (canal beta, pas apt prod) sépare le cycle de vie du panneau
+ (assurer_panel), du bureau (assurer_desktop) et du menu ; boreal-theme-toggle
+ capture DISPLAY avant pkill lxqt-panel ; heal_session ne redémarre plus le
+ stack graphique (fichiers locale uniquement).
+ .
+ La 3.6.3~beta14 (canal beta, pas apt prod) corrige le flash-close du menu
+ Start : Unfocused parasite à l'ouverture (XWayland) est ignoré jusqu'à
+ Focused + grâce 400 ms — le panneau reste ouvert et cliquable.
+ .
+ La 3.6.3~beta13 (canal beta, pas apt prod) coupe le gel crash-loop
+ boreal-tablette sur portable ordinaire : sonde partielle → exit 3
+ (SuccessExitStatus), StartLimit* dans [Unit], RestartPreventExitStatus=8.
+ Conserve tooltips monolingues, menu ancré, Plymouth/GRUB Rabaska, heal-session.
+ .
+ La 3.6.3~beta12 (canal beta, pas apt prod) retire WAYLAND_DISPLAY du
+ processus menu pour forcer vraiment XWayland (ancrage bas-gauche) tout en
+ réinjectant Wayland aux apps lancées.
+ .
+ La 3.6.3~beta11 (canal beta, pas apt prod) force les tooltips barre
+ strictement monolingues selon lang= (plus de « Light / Dark » / mélange
+ FR+EN sur la même barre) ; wrapper lxqt-panel xcb ; menu ancré XWayland ;
+ coins opaques ; GRUB_DISTRIBUTOR=Rabaska OS + dracut.
+ .
+ La 3.6.3~beta10 (canal beta, pas apt prod) ancre le menu Start sous XWayland
+ (Wayland ignore Position/move_to), supprime les coins noirs (fenêtre opaque +
+ rayon), force les Name= EN de TOUTES les tuiles quicklaunch (rename_app FR),
+ lance lxqt-panel via wrapper xcb pour tooltips au-dessus, livre
+ GRUB_DISTRIBUTOR=Rabaska OS (drop-in) et régénère l'initrd via dracut.
+ .
+ La 3.6.3~beta9 (canal beta, pas apt prod) migre heal locale/bureau/tooltips
+ panel en Rust (`boreal-welcome-rs --heal-session`, TDD), livre boreal-ai.desktop
+ dans le .deb, et fige les contrats QSS/Plymouth/Name=EN par cargo test.
+ .
+ La 3.6.3~beta8 (canal beta, pas apt prod) fait pointer le panel vers les
+ .desktop locaux FR/EN (chemins absolus quicklaunch) — tooltips barre alignés
+ même si Name[en] du système n'est pas lu.
+ .
+ La 3.6.3~beta7 (canal beta, pas apt prod) soigne la locale English quand
+ en_CA est absente (selfheal → en_US + LC_* alignés), force les tooltips
+ barre en anglais via overrides .desktop, rend les bulles opaques à fort
+ contraste, et livre le splash Plymouth « Rabaska » dans le .deb.
+ .
+ La 3.6.3~beta6 (canal beta, pas apt prod) aligne les libellés des icônes
+ bureau (Computer / Trash) sur lang=en au commit welcome et via selfheal —
+ plus de « Cet ordinateur / Corbeille » figés après English + logout.
+ .
+ La 3.6.3~beta5 (canal beta, pas apt prod) propage le choix English au-delà
+ de la page welcome : locale session (environment.d, LXQt, locale.conf,
+ plasma-localerc), menu qui relit lang= à chaque ouverture, repli en_US
+ si en_CA n'est pas générée, message de reconnexion honnête.
+ .
+ La 3.6.3~beta4 (canal beta, pas apt prod) propose FR/EN au premier
+ allumage (étape Langue avant style), pose la locale de session, et
+ complète les textes acheteur en anglais (welcome, menu, update,
+ .desktop).
+ .
+ La 3.6.3~beta3 remonte le filigrane « Rabaska » des fonds d'écran clair
+ et sombre : le bas du texte reste au-dessus de la barre de 60 px même
+ sur l'écran 1366x768 visé (avant : tronqué par la barre).
+ .
+ La 3.6.3~beta2 corrige l'ancrage du menu Rust sous Wayland/labwc (coin
+ bas-gauche au-dessus du bouton « R », plus centré à l'écran).
+ .
+ La 3.6.3~beta1 (canal beta, pas apt prod) sépare davantage la barre
+ claire du bureau (bar #fbf8f2 + filet 2px), et remplace les icônes
+ tray Papirus *-panel (#dfdfdf) par des overrides Boreal en encre
+ Rabaska — bluetooth / volume lisibles sur crème.
  .
  N'est pas Microsoft Windows et n'a aucune affiliation avec Microsoft ;
  identité 100 % originale (aucun asset propriétaire).
